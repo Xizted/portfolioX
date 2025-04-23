@@ -16,7 +16,7 @@ const Header = () => {
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       className={clsx(
-        'h-16 lex items-center justify-end px-4 sticky top-0 z-10 backdrop-blur-sm border-b',
+        'h-16 flex items-center justify-end px-4 sticky top-0 z-10 backdrop-blur-sm border-b',
         {
           'bg-gray-800/50 border-gray-700/50': theme === 'dark',
           'bg-white/50 border-gray-200/50': theme === 'light',
