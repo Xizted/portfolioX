@@ -3,9 +3,10 @@
 import { useState } from 'react';
 import { useTheme } from 'next-themes';
 import { motion } from 'framer-motion';
-import { ExternalLink, Star } from 'lucide-react';
+import { ExternalLink, Search, Star } from 'lucide-react';
 import Image from 'next/image';
 import { Template } from '@/interfaces/Template';
+import clsx from 'clsx';
 
 const templates: Template[] = [
   {
@@ -37,6 +38,7 @@ const templates: Template[] = [
 export default function Dashboard() {
   const { theme } = useTheme();
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [searchFocused, setSearchFocused] = useState(false);
   const categories = ['All', 'Minimal', 'Modern', 'Creative'];
 
   const filteredTemplates =
@@ -48,24 +50,41 @@ export default function Dashboard() {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className='p-8'
+      className='p-8 md:p-8'
     >
       <motion.div
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.1 }}
-        className='flex justify-between items-center mb-8'
+        className='flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6 md:mb-8'
       >
         <h1 className='text-2xl font-light'>Templates</h1>
         <motion.div whileHover={{ scale: 1.02 }} className='relative'>
+          <Search
+            size={18}
+            className={clsx(
+              'absolute left-3 top-1/2 -translate-y-1/2 transition-colors',
+              searchFocused
+                ? theme === 'dark'
+                  ? 'text-blue-400'
+                  : 'text-blue-600'
+                : theme === 'dark'
+                ? 'text-gray-400'
+                : 'text-gray-500'
+            )}
+          />
           <input
             type='text'
             placeholder='Search templates...'
-            className={`px-4 py-2 rounded-full border ${
+            onFocus={() => setSearchFocused(true)}
+            onBlur={() => setSearchFocused(false)}
+            className={clsx(
+              'w-full md:w-64 pl-10 pr-4 py-2 rounded-full border transition-all',
               theme === 'dark'
                 ? 'bg-gray-800 border-gray-700'
-                : 'bg-white border-gray-200'
-            } focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                : 'bg-white border-gray-200',
+              'focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all'
+            )}
           />
         </motion.div>
       </motion.div>
@@ -74,7 +93,7 @@ export default function Dashboard() {
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.2 }}
-        className='flex space-x-2 mb-8 overflow-x-auto pb-2'
+        className='flex flex-wrap gap-2 mb-6 md:mb-8'
       >
         {categories.map((category) => (
           <motion.button
@@ -82,13 +101,14 @@ export default function Dashboard() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setSelectedCategory(category)}
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+            className={clsx(
+              'px-4 py-2 rounded-full text-sm font-medium transition-colors',
               selectedCategory === category
                 ? 'bg-blue-600 text-white'
                 : theme === 'dark'
                 ? 'bg-gray-800 text-gray-300 hover:bg-gray-700'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-            }`}
+            )}
           >
             {category}
           </motion.button>
@@ -97,7 +117,7 @@ export default function Dashboard() {
 
       <motion.div
         layout
-        className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'
+        className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8'
       >
         {filteredTemplates.map((template, index) => (
           <motion.div
@@ -106,9 +126,11 @@ export default function Dashboard() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
             whileHover={{ y: -8 }}
-            className={`rounded-xl overflow-hidden ${
-              theme === 'dark' ? 'bg-gray-800' : 'bg-white'
-            } shadow-lg`}
+            className={clsx(
+              'rounded-xl overflow-hidden',
+              theme === 'dark' ? 'bg-gray-800' : 'bg-white',
+              'shadow-lg'
+            )}
           >
             <motion.div
               whileHover={{ scale: 1.05 }}
@@ -144,9 +166,10 @@ export default function Dashboard() {
                 </div>
               </div>
               <p
-                className={`text-sm mt-1 ${
+                className={clsx(
+                  'text-sm mt-1',
                   theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                }`}
+                )}
               >
                 {template.category}
               </p>

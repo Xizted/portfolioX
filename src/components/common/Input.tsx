@@ -8,6 +8,7 @@ import { InputHTMLAttributes, JSX, useState } from 'react';
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   Icon?: JSX.ElementType;
   label?: string;
+  error?: string;
 }
 
 const Input = ({
@@ -16,6 +17,7 @@ const Input = ({
   label,
   name,
   type,
+  error,
   ...props
 }: InputProps) => {
   const { theme } = useTheme();
@@ -30,6 +32,9 @@ const Input = ({
     theme === 'dark'
       ? 'bg-gray-700/50 border-gray-600 text-white placeholder-gray-400 focus:border-blue-400 focus:ring-blue-400/20'
       : 'bg-white/50 border-gray-200 focus:border-blue-500 focus:ring-blue-500/20',
+    error
+      ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20'
+      : 'border-gray-200 focus:border-blue-500 focus:ring-blue-500/20',
     className
   );
 
@@ -37,6 +42,9 @@ const Input = ({
     'absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 transition-colors',
     theme === 'dark'
       ? 'text-gray-400 group-focus-within:text-blue-400'
+      : 'text-gray-400 group-focus-within:text-blue-600',
+    error
+      ? 'text-red-500 group-focus-within:text-red-500'
       : 'text-gray-400 group-focus-within:text-blue-600'
   );
 
@@ -65,16 +73,30 @@ const Input = ({
           <button
             type='button'
             onClick={togglePasswordVisibility}
-            className={clsx('absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer transition-colors',
+            className={clsx(
+              'absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer transition-colors',
               theme === 'dark'
                 ? 'group-focus-within:text-blue-400'
-                : 'group-focus-within:text-blue-600'
+                : 'group-focus-within:text-blue-600',
+              error
+                ? 'text-red-500 group-focus-within:text-red-500'
+                : 'text-gray-400 group-focus-within:text-blue-600'
             )}
           >
             {showPassword ? <EyeOff /> : <Eye />}
           </button>
         )}
       </div>
+      {error && (
+        <p
+          className={clsx(
+            'mt-2 text-sm',
+            theme === 'dark' ? 'text-red-400' : 'text-red-500'
+          )}
+        >
+          {error}
+        </p>
+      )}
     </div>
   );
 };

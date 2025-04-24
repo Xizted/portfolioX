@@ -7,22 +7,41 @@ import clsx from 'clsx';
 import { useTheme } from 'next-themes';
 import { useLoginMutation } from '@/services/mutation/authMutation';
 import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as Yup from 'yup';
 
 interface LoginForm {
   email: string;
   password: string;
 }
 
+const resolver = yupResolver(
+  Yup.object().shape({
+    email: Yup.string()
+      .email('Invalid email format')
+      .required('Email is required'),
+    password: Yup.string()
+      .min(6, 'Password must be at least 6 characters')
+      .required('Password is required'),
+  })
+);
+
 const LoginForm = () => {
   const { theme } = useTheme();
 
   const { mutateAsync: loginMutation, isPending } = useLoginMutation();
 
-  const { register, handleSubmit } = useForm<LoginForm>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginForm>({
     defaultValues: {
       email: '',
       password: '',
     },
+    resolver,
+    mode: 'all',
   });
 
   const onSubmit = async (data: LoginForm) => {
@@ -34,24 +53,24 @@ const LoginForm = () => {
   };
 
   return (
-    <form className='space-y-5' onSubmit={handleSubmit(onSubmit)}>
+    <form className='space-y-5' onSubmit={handleSubmit(onSubmit)} noValidate>
       <Input
         label='Email'
         type='email'
         placeholder='Email'
-        required
         autoComplete='email'
         Icon={Mail}
         {...register('email')}
+        error={errors.email?.message}
       />
       <Input
         type='password'
         placeholder='Password'
-        required
         autoComplete='current-password'
         label='Password'
         Icon={Lock}
         {...register('password')}
+        error={errors.password?.message}
       />
 
       <motion.button

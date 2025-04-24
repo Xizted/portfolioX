@@ -6,6 +6,7 @@ import { useTheme } from 'next-themes';
 import Sidebar from '@/components/dashboard/Sidebar';
 import Header from '@/components/dashboard/Header';
 import { useEffect, useState } from 'react';
+import Breadcrumbs from '@/components/dashboard/Breadcrumbs';
 
 const DashboardLayout = ({
   children,
@@ -33,6 +34,7 @@ const DashboardLayout = ({
       <motion.div layout className='flex-1 overflow-hidden'>
         <div className='flex flex-col h-screen'>
           <Header />
+          <Breadcrumbs />
           <main className='flex-1 overflow-y-auto'>{children}</main>
         </div>
       </motion.div>

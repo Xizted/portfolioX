@@ -9,4 +9,5 @@ export interface NavItemProps {
   label: string;
   collapsed: boolean;
   active?: boolean;
+  onClick?: () => void;
 }
