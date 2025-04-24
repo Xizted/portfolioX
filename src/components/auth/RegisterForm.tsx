@@ -29,7 +29,7 @@ const resolver = yupResolver(
 const RegisterForm = () => {
   const { mutateAsync: registerMutation, isPending } = useRegisterMutation();
 
-  const { register, handleSubmit } = useForm<RegisterForm>({
+  const { register, handleSubmit, formState: {errors} } = useForm<RegisterForm>({
     defaultValues: {
       email: '',
       password: '',
@@ -56,6 +56,7 @@ const RegisterForm = () => {
         autoComplete='email'
         Icon={Mail}
         {...register('email')}
+        error={errors.email?.message}
       />
       <Input
         type='password'
@@ -65,6 +66,7 @@ const RegisterForm = () => {
         label='Password'
         Icon={Lock}
         {...register('password')}
+        error={errors.password?.message}
       />
 
       <motion.button
