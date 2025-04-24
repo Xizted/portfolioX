@@ -6,11 +6,25 @@ import Input from '../common/Input';
 import clsx from 'clsx';
 import { useRegisterMutation } from '@/services/mutation/authMutation';
 import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as Yup from 'yup';
 
 interface RegisterForm {
   email: string;
   password: string;
 }
+
+const resolver = yupResolver(
+  Yup.object().shape({
+    email: Yup.string()
+      .email('Invalid email format')
+      .required('Email is required'),
+    password: Yup.string()
+      .min(6, 'Password must be at least 6 characters')
+      .required('Password is required'),
+  })
+);
+
 
 const RegisterForm = () => {
   const { mutateAsync: registerMutation, isPending } = useRegisterMutation();
@@ -20,6 +34,8 @@ const RegisterForm = () => {
       email: '',
       password: '',
     },
+    resolver,
+    mode: 'all',
   });
 
   const onSubmit = async (data: RegisterForm) => {
