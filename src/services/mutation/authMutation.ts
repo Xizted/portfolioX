@@ -20,7 +20,7 @@ export const useLoginMutation = () => {
       toast.success('Login successful!', {
         position: 'top-right',
       });
-      router.push('/dashboard/home');
+      router.push('/dashboard/templates');
     },
 
     onMutate: () => {
@@ -56,7 +56,7 @@ export const useRegisterMutation = () => {
       toast.success('Registration successful!', {
         position: 'top-right',
       });
-      router.push('/dashboard/home');
+      router.push('/dashboard/templates');
     },
     onMutate: () => {
       toastId.current = toast.loading('Registering...', {

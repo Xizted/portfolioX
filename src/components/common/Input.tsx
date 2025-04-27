@@ -9,6 +9,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   Icon?: JSX.ElementType;
   label?: string;
   error?: string;
+  iconSize?: number;
 }
 
 const Input = ({
@@ -18,6 +19,7 @@ const Input = ({
   name,
   type,
   error,
+  iconSize = 24,
   ...props
 }: InputProps) => {
   const { theme } = useTheme();
@@ -28,10 +30,10 @@ const Input = ({
   };
 
   const inputClassName = clsx(
-    'w-full pl-10 pr-4 py-2.5 rounded-xl border transition-all duration-200 focus:outline-none focus:ring-4',
+    'w-full pl-10 pr-4 py-2.5 border transition-all duration-200 focus:outline-none focus:ring-4',
     theme === 'dark'
-      ? 'bg-gray-700/50 border-gray-600 text-white placeholder-gray-400 focus:border-blue-400 focus:ring-blue-400/20'
-      : 'bg-white/50 border-gray-200 focus:border-blue-500 focus:ring-blue-500/20',
+      ? 'bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:border-blue-400 focus:ring-blue-400/20'
+      : 'bg-white border-gray-200 focus:border-blue-500 focus:ring-blue-500/20',
     error
       ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20'
       : 'border-gray-200 focus:border-blue-500 focus:ring-blue-500/20',
@@ -61,7 +63,7 @@ const Input = ({
         </label>
       )}
       <div className='relative group'>
-        {Icon && <Icon className={iconClassName} />}
+        {Icon && <Icon size={iconSize} className={iconClassName} />}
         <input
           {...props}
           type={type === 'password' && showPassword ? 'text' : type}

@@ -62,6 +62,7 @@ const LoginForm = () => {
         Icon={Mail}
         {...register('email')}
         error={errors.email?.message}
+        className='rounded-xl'
       />
       <Input
         type='password'
@@ -71,6 +72,7 @@ const LoginForm = () => {
         Icon={Lock}
         {...register('password')}
         error={errors.password?.message}
+        className='rounded-xl'
       />
 
       <motion.button
